@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class PlayerController extends Controller
 {
-
     //GET ALL PLAYERS
     public function index()
     {
@@ -17,18 +16,15 @@ class PlayerController extends Controller
         //get all players from the database and order them by created_at
         $players = Player::with('company')->orderBy('created_at', 'desc')->paginate(10); //fetch the 10 first
 
-
         return view('players.index', ['players' => $players]);
     }
 
-
     //SHOW SPECIFIC PLAYER BY ID
-    public function show($id)
+    public function show(Player $player)
     {
-        //route -> /players/{id}
+        //route -> /players/{player}
 
-        //find the player by id that is passed to the function passed
-        $player = Player::with('company')->findOrFail($id);
+        $player->load('company');
 
         //pass the show view and the player from the db found with id provided
         return view('players.show', ["player" => $player]);
@@ -48,22 +44,21 @@ class PlayerController extends Controller
         Player::create($validated);
 
         //redirect to page
-        return redirect()->route('players.index');
+        return redirect()->route('players.index')->with('success', 'Player Created!');
     }
 
     //DELETE PLAYER BY ID
-    public function destroy($id)
+    public function destroy(Player $player)
     {
-        //-> /players/{id} (DELETE)
-        $player = Player::findOrFail($id);
+        //-> /players/{player} (DELETE)
         $player->delete();
 
         //redirect to page
-        return redirect()->route('players.index');
+        return redirect()->route('players.index')->with('success', 'Player Deleted!');;
     }
 
 
-    
+
     //SHOW CREATE PAGE AND SEND THE COMPANIES WITH IT TO POPULATE THE FORM
     public function create()
     {

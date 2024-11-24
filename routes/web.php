@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 Route::get('/players', [PlayerController::class, 'index'])->name('players.index');
 Route::get('/players/create', [PlayerController::class, 'create'])->name('players.create');
-Route::get('/players/{id}', [PlayerController::class, 'show'])->name('players.show');
+Route::get('/players/{player}', [PlayerController::class, 'show'])->name('players.show');
 
 Route::post('/players', [PlayerController::class, 'store'])->name('players.store');
-Route::delete('/players/{id}', [PlayerController::class, 'destroy'])->name('players.destroy');
+Route::delete('/players/{player}', [PlayerController::class, 'destroy'])->name('players.destroy');
